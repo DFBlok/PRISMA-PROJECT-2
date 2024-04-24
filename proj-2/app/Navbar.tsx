@@ -16,7 +16,6 @@ const Navbar = () => {
       <nav className="flex items-center gap-4">
         <Link href="/">
           <Bug />
-          Bug Tracker
         </Link>
         <ul className="flex gap-4 items-center">
           {links.map((item) => (
