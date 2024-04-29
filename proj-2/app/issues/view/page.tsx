@@ -4,6 +4,7 @@ import Link from "next/link";
 import prisma from "@/prisma/client";
 import { notFound } from "next/navigation";
 import { Table } from "@radix-ui/themes";
+import IssueBadge from "@/app/components/IssueBadge";
 const IssuePage = async () => {
   let issues = await prisma.issue.findMany();
   if (!issues) notFound;
@@ -30,10 +31,12 @@ const IssuePage = async () => {
             <Table.Row key={issue.id}>
               <Table.Cell>
                 {issue.title}
-                <div className="block md:hidden">{issue.status}</div>
+                <div className="block md:hidden">
+                  <IssueBadge status={issue.status} />
+                </div>
               </Table.Cell>
               <Table.Cell className="hidden md:table-cell">
-                {issue.status}
+                <IssueBadge status={issue.status} />
               </Table.Cell>
               <Table.Cell className="hidden md:table-cell">
                 {issue.createdAt.toDateString()}
