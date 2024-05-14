@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "./Navbar";
 import "@radix-ui/themes/styles.css";
 import { Theme } from "@radix-ui/themes";
+import AuthWrapper from "./api/lib/auth-wrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,12 +20,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className} suppressHydrationWarning>
-        <Theme>
-          <Navbar />
-          <div className="px-5">{children}</div>
-        </Theme>
-      </body>
+      <AuthWrapper>
+        <body className={inter.className} suppressHydrationWarning>
+          <Theme>
+            <Navbar />
+            <div className="px-5">{children}</div>
+          </Theme>
+        </body>
+      </AuthWrapper>
     </html>
   );
 }
