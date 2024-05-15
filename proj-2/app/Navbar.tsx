@@ -73,7 +73,9 @@ const AuthMenu = () => {
       <DropdownMenu.Content>
         <DropdownMenu.Item>{session!.user!.email}</DropdownMenu.Item>
         <DropdownMenu.Item>
-          <Link href="/api/auth/signout">Signout</Link>
+          <Link href="/api/auth/signout" className="text-gray-800">
+            Signout
+          </Link>
         </DropdownMenu.Item>
       </DropdownMenu.Content>
     </DropdownMenu.Root>
