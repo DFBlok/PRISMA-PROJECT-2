@@ -9,6 +9,7 @@ import IssueDetails from "../_components/IssueDetails";
 import DeleteIssueButton from "../_components/DeleteIssueButton";
 import EditIssueButton from "../_components/EditIssueButton";
 import { auth } from "@/auth";
+import AssignSelect from "../_components/AssignSelect";
 interface Props {
   params: { id: string };
 }
@@ -28,6 +29,7 @@ const IssueDetailsPage = async ({ params }: { params: { id: string } }) => {
       </Box>
       <Box>
         <Flex direction="column" gap="4">
+          <AssignSelect />
           {session?.user && (
             <>
               <EditIssueButton issueId={issue.id} />
