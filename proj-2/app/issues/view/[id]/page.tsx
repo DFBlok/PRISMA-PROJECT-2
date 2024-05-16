@@ -1,6 +1,6 @@
 import React from "react";
 import prisma from "@/prisma/client";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { Heading, Flex, Box, Card, Button, Grid } from "@radix-ui/themes";
 import IssueBadge from "@/app/components/IssueBadge";
 import Markdown from "react-markdown";
@@ -8,11 +8,13 @@ import Link from "next/link";
 import IssueDetails from "../_components/IssueDetails";
 import DeleteIssueButton from "../_components/DeleteIssueButton";
 import EditIssueButton from "../_components/EditIssueButton";
+import { auth } from "@/auth";
 interface Props {
   params: { id: string };
 }
 const IssueDetailsPage = async ({ params }: { params: { id: string } }) => {
-  const issue = await prisma.issue.findUnique({ where: { id: params.id } });
+  const session = await auth();
+  let issue = await prisma.issue.findUnique({ where: { id: params.id } });
   if (!issue) notFound();
   return (
     <Grid
@@ -26,8 +28,14 @@ const IssueDetailsPage = async ({ params }: { params: { id: string } }) => {
       </Box>
       <Box>
         <Flex direction="column" gap="4">
-          <EditIssueButton issueId={issue.id} />
-          <DeleteIssueButton issueId={issue.id} />
+          {session?.user && (
+            <>
+              <EditIssueButton issueId={issue.id} />
+              <DeleteIssueButton issueId={issue.id} />
+            </>
+          )}
+          {!session?.user &&
+            redirect("/api/auth/signin?callbackUrl=/issues/new")}
         </Flex>
       </Box>
     </Grid>
