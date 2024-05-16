@@ -4,16 +4,18 @@ import { Select } from "@radix-ui/themes";
 import axios from "axios";
 import { Value } from "@radix-ui/themes/src/components/data-list.jsx";
 import { User } from "@prisma/client";
+import { useQuery } from "@tanstack/react-query";
 const AssignSelect = () => {
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      let { data } = await axios.get("/api/users");
-      setUsers(data);
-    };
-    fetchUser();
-  }, []);
+  const {
+    error,
+    isLoading,
+    data: users,
+  } = useQuery<User[]>({
+    queryKey: ["users"],
+    queryFn: () => axios.get("/api/users").then((res) => res.data),
+    staleTime: 60 * 1000, // 60 sec
+    retry: 3,
+  });
 
   return (
     <div>

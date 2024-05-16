@@ -5,6 +5,7 @@ import Navbar from "./Navbar";
 import "@radix-ui/themes/styles.css";
 import { Theme } from "@radix-ui/themes";
 import AuthWrapper from "./api/lib/auth-wrapper";
+import QueryClientProvider from "@/QueryClientProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,10 +23,12 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <AuthWrapper>
         <body className={inter.className} suppressHydrationWarning>
-          <Theme>
-            <Navbar />
-            <div className="px-5">{children}</div>
-          </Theme>
+          <QueryClientProvider>
+            <Theme>
+              <Navbar />
+              <div className="px-5">{children}</div>
+            </Theme>
+          </QueryClientProvider>
         </body>
       </AuthWrapper>
     </html>
