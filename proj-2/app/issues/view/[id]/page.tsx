@@ -29,7 +29,7 @@ const IssueDetailsPage = async ({ params }: { params: { id: string } }) => {
       </Box>
       <Box>
         <Flex direction="column" gap="4">
-          <AssignSelect />
+          <AssignSelect issue={issue} />
           {session?.user && (
             <>
               <EditIssueButton issueId={issue.id} />

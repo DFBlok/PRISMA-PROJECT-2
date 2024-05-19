@@ -3,9 +3,11 @@ import React, { useState, useEffect } from "react";
 import { Select } from "@radix-ui/themes";
 import axios from "axios";
 import { Value } from "@radix-ui/themes/src/components/data-list.jsx";
-import { User } from "@prisma/client";
+import { User, Issue } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
-const AssignSelect = () => {
+import Skeleton from "react-loading-skeleton";
+import toast, { Toaster } from "react-hot-toast";
+const AssignSelect = ({ issue }: { issue: Issue }) => {
   const {
     error,
     isLoading,
@@ -17,13 +19,30 @@ const AssignSelect = () => {
     retry: 3,
   });
 
+  if (isLoading) return <Skeleton />;
+
+  const assignIssue = async (userId: string) => {
+    try {
+      await axios.patch(`/api/issues/${issue.id}`, {
+        assignedToUserId: userId === "unassigned" ? null : userId,
+      });
+      toast.success("Updated successfully");
+    } catch (error) {
+      toast.error("Change could not save");
+    }
+  };
+
   return (
     <div>
-      <Select.Root>
+      <Select.Root
+        onValueChange={assignIssue}
+        defaultValue={issue.assignedToUserId || "unassigned"}
+      >
         <Select.Trigger placeholder="Assign user...." />
         <Select.Content>
           <Select.Group>
             <Select.Label>Suggestions</Select.Label>
+            <Select.Item value="unassigned">Unassign</Select.Item>
             <Select.Item value="1">Dev</Select.Item>
             {users &&
               users.map((user) => (
@@ -34,6 +53,7 @@ const AssignSelect = () => {
           </Select.Group>
         </Select.Content>
       </Select.Root>
+      <Toaster />
     </div>
   );
 };
