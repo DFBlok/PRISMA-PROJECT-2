@@ -7,11 +7,25 @@ import { Table } from "@radix-ui/themes";
 import IssueBadge from "@/app/components/IssueBadge";
 import delay from "delay";
 import ActionButton from "@/app/components/ActionButton";
-const IssuePage = async () => {
-  await delay(2000);
-  let issues = await prisma.issue.findMany();
-  if (!issues) notFound;
-  console.log(issues);
+import { Status } from "@prisma/client";
+
+const IssuePage = async ({
+  searchParams,
+}: {
+  searchParams: { status: Status };
+}) => {
+  await delay(1000);
+
+  const statuses = Object.values(Status);
+  const status = statuses.includes(searchParams.status)
+    ? searchParams.status
+    : undefined;
+
+  const issues = await prisma.issue.findMany({
+    where: {
+      status: status,
+    },
+  });
 
   return (
     <div className="max-w-2xl">
