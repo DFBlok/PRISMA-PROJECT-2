@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { Table } from "@radix-ui/themes";
 import IssueBadge from "@/app/components/IssueBadge";
 import delay from "delay";
+import ActionButton from "@/app/components/ActionButton";
 const IssuePage = async () => {
   await delay(2000);
   let issues = await prisma.issue.findMany();
@@ -14,10 +15,11 @@ const IssuePage = async () => {
 
   return (
     <div className="max-w-2xl">
-      <div className="my-4">
-        <Button asChild size="3">
+      <div className="my-4 ">
+        {/* <Button asChild size="3">
           <Link href="/issues/new">Add New Issue</Link>
-        </Button>
+        </Button> */}
+        <ActionButton />
       </div>
       <Table.Root variant="surface">
         <Table.Header>
