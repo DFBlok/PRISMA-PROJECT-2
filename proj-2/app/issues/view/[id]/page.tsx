@@ -10,6 +10,11 @@ import DeleteIssueButton from "../_components/DeleteIssueButton";
 import EditIssueButton from "../_components/EditIssueButton";
 import { auth } from "@/auth";
 import AssignSelect from "../_components/AssignSelect";
+import { cache } from "react";
+
+const fetchIssue = cache((issueId: string) =>
+  prisma.issue.findUnique({ where: { id: issueId } })
+);
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
   const issue = await prisma.issue.findUnique({
@@ -27,7 +32,7 @@ interface Props {
 }
 const IssueDetailsPage = async ({ params }: { params: { id: string } }) => {
   const session = await auth();
-  let issue = await prisma.issue.findUnique({ where: { id: params.id } });
+  let issue = await fetchIssue(params.id);
   if (!issue) notFound();
   return (
     <Grid
