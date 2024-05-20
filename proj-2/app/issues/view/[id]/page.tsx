@@ -10,6 +10,18 @@ import DeleteIssueButton from "../_components/DeleteIssueButton";
 import EditIssueButton from "../_components/EditIssueButton";
 import { auth } from "@/auth";
 import AssignSelect from "../_components/AssignSelect";
+
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const issue = await prisma.issue.findUnique({
+    where: { id: params.id },
+  });
+  return {
+    title: "issue details " + (issue?.title || "Unknown issue"),
+    description:
+      "This is the details of issue " + (issue?.title || "Unknown issue"),
+  };
+}
+
 interface Props {
   params: { id: string };
 }

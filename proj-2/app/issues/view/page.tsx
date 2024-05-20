@@ -11,7 +11,13 @@ import { Status, Issue } from "@prisma/client";
 import NextLink from "next/link";
 import { ArrowUp } from "lucide-react";
 import Paginition from "./_components/Paginition";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "List of Issues",
+  description:
+    "List of issues, you can visit each issue for update, delete or assigned to user",
+};
 const IssuePage = async ({
   searchParams,
 }: {
